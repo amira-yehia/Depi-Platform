@@ -1,16 +1,28 @@
-# React + Vite
+# 🚀 DEPI Platform - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **DEPI Platform** frontend repository! This is a comprehensive web application designed as a **Mega Project** for the DEPI program. The platform focuses on **Smart Recruitment and Assessment** using a modern tech stack.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
+- **Framework:** [React.js](https://react.dev/) (with Vite)
+- **Routing:** [React Router Dom](https://reactrouter.com/)
+- **API Client:** [Axios](https://axios-http.com/)
+- **Styling:** [Bootstrap](https://getbootstrap.com/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📂 Project Structure
+We follow a **Feature-Based Architecture** to ensure scalability:
+- `src/features/`: Contains business logic and components grouped by feature (Auth, Marketplace, etc.)
+- `src/components/`: Reusable UI components (Buttons, Inputs, Layouts).
+- `src/services/`: API configuration and service layers.
+- `src/hooks/`: Custom React hooks.
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-## Expanding the ESLint configuration
+### Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Clone the repository:**
+```bash
+git clone [https://github.com/amira-yehia/Depi-Platform.git](https://github.com/amira-yehia/Depi-Platform.git)
