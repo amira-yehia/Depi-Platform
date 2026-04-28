@@ -25,21 +25,24 @@ We follow a **Feature-Based Architecture** to ensure scalability:
 
 1. **Clone the repository:**
 ```bash
-git clone [https://github.com/amira-yehia/Depi-Platform.git](https://github.com/amira-yehia/Depi-Platform.git)
+git clone [https://github.com/amira-yehia/Depi-Platform.git](https://github.com/amira-yehia/Depi-Platform.git)```
 
 Install dependencies:
 
-Bash
-npm install
+```Bash
+npm install```
+
 Start the development server:
 
-Bash
-npm run dev
-👥 Team (Frontend)
+```Bash
+npm run dev```
+
+
+```👥 Team (Frontend)
 Amira Yehia (Frontend Lead)
 
 Ahmed Bayomi
 
 Eman Younes
 
-Amr Elawadly
+Amr Elawadly```
