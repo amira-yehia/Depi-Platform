@@ -1,39 +1,42 @@
-🚀 DEPI Platform - Frontend
-Welcome to the DEPI Platform frontend repository! This is a comprehensive web application designed as a Mega Project for the DEPI program. The platform focuses on Smart Recruitment and Assessment using a modern tech stack.
+# 🚀 DEPI Platform - Frontend
 
-🛠️ Tech Stack
-Framework: React.js (with Vite)
+Welcome to the **DEPI Platform** frontend repository! This is a comprehensive web application designed as a **Mega Project** for the DEPI program. The platform focuses on **Smart Recruitment and Assessment** using a modern tech stack.
 
-Routing: React Router Dom
+## 🛠️ Tech Stack
+- **Framework:** [React.js](https://react.dev/) (with Vite)
+- **Routing:** [React Router Dom](https://reactrouter.com/)
+- **API Client:** [Axios](https://axios-http.com/)
+- **Styling:** [Bootstrap](https://getbootstrap.com/)
 
-API Client: Axios
+## 📂 Project Structure
+We follow a **Feature-Based Architecture** to ensure scalability:
+- `src/features/`: Contains business logic and components grouped by feature (Auth, Marketplace, etc.)
+- `src/components/`: Reusable UI components (Buttons, Inputs, Layouts).
+- `src/services/`: API configuration and service layers.
+- `src/hooks/`: Custom React hooks.
 
-Styling: Bootstrap
+## 🚀 Getting Started
 
-📂 Project Structure
-src/features/: Business logic and components.
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-src/components/: Reusable UI components.
+### Installation
 
-src/services/: API configuration.
-
-src/hooks/: Custom React hooks.
-
-🚀 Getting Started
-Installation
-Clone the repository:
-
-Bash
-git clone https://github.com/amira-yehia/Depi-Platform.git
-Install dependencies:
-
-Bash
+1. **Clone the repository:**
+```bash
+git clone [https://github.com/amira-yehia/Depi-Platform.git](https://github.com/amira-yehia/Depi-Platform.git)
+```
+2. **Install dependencies:**
+```bash
 npm install
-Start the development server:
-
-Bash
+```
+3. **Start the development server:**
+```bash
 npm run dev
+```
 👥 Team (Frontend)
+
 Amira Yehia (Frontend Lead)
 
 Ahmed Bayomi
@@ -41,3 +44,4 @@ Ahmed Bayomi
 Eman Younes
 
 Amr Elawadly
+
