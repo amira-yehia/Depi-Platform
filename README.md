@@ -11,22 +11,15 @@ API Client: Axios
 Styling: Bootstrap
 
 📂 Project Structure
-We follow a Feature-Based Architecture to ensure scalability:
+src/features/: Business logic and components.
 
-src/features/: Contains business logic and components grouped by feature (Auth, Marketplace, etc.)
+src/components/: Reusable UI components.
 
-src/components/: Reusable UI components (Buttons, Inputs, Layouts).
-
-src/services/: API configuration and service layers.
+src/services/: API configuration.
 
 src/hooks/: Custom React hooks.
 
 🚀 Getting Started
-Prerequisites
-Node.js (v18 or higher)
-
-npm or yarn
-
 Installation
 Clone the repository:
 
