@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    *,
-    *::before,
-    *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    }
-
     :root {
     --bg-deep:        #0d1b2e;
     --bg-mid:         #12263f;
@@ -27,7 +19,7 @@
     --radius-btn:     10px;
     }
 
-    body {
+    .auth-wrapper {
     font-family: 'Poppins', sans-serif;
     background: var(--bg-deep);
     min-height: 100vh;

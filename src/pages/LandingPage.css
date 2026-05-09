@@ -13,6 +13,17 @@
     ),
     var(--nh-navy);
   color: var(--nh-white);
+  overflow-x: hidden;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================
@@ -24,6 +35,7 @@
   place-items: center;
   padding: 52px 20px 62px;
   text-align: center;
+  animation: fadeUp 0.65s ease both 0.1s;
 }
 
 .landingHero__content {
@@ -158,6 +170,7 @@
   width: min(1160px, calc(100% - 40px));
   margin: 0 auto;
   padding: 58px 0;
+  animation: fadeUp 0.65s ease both 0.2s;
 }
 
 .landingSection__header {
@@ -317,6 +330,160 @@
   color: var(--nh-white);
   font-size: 20px;
   z-index: 1;
+}
+/* =========================================
+   AI Intelligence Grid (Matching Image)
+========================================= */
+.aiGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.aiCard {
+  background: rgba(30, 48, 76, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  min-height: 280px;
+  backdrop-filter: blur(10px);
+}
+
+.aiCard h3 {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 24px;
+  color: var(--nh-white);
+  text-align: left;
+}
+
+.aiCard__desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  margin: auto 0 0;
+  font-weight: 500;
+}
+
+/* Match Score */
+.aiCard__main {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.aiCard__score {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--nh-orange);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.aiCard__progress {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 140px;
+}
+
+.aiCard__progressFill {
+  height: 100%;
+  background: var(--nh-orange);
+  border-radius: 99px;
+}
+
+/* Profile Score (Multiple Bars) */
+.aiCard__skills {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.aiSkill__info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.aiSkill__bar {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.aiSkill__bar div {
+  height: 100%;
+  background: #3a8ffd;
+  border-radius: 99px;
+}
+
+/* Price Prediction */
+.aiCard__priceBox {
+  margin-bottom: 16px;
+}
+
+.aiCard__priceBox small {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+.aiCard__price {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--nh-white);
+  margin-top: 4px;
+}
+
+.aiCard__price span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+.aiCard__priceBreakdown {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiCard__priceBreakdown li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.aiCard__priceBreakdown li .text-orange {
+  color: var(--nh-orange);
+}
+
+.aiCard__priceBreakdown li .text-blue {
+  color: #3b8cfc;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .aiGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 .howStep__number {

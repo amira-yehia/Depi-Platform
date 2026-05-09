@@ -114,7 +114,7 @@ function LandingPage() {
               <i className="fa-solid fa-arrow-right" aria-hidden="true" />
             </Link>
 
-            <Link to="/dashboard" className="nh-btn nh-btn--outline">
+            <Link to="/login" className="nh-btn nh-btn--outline">
               Explore Jobs
             </Link>
           </div>
@@ -198,6 +198,71 @@ function LandingPage() {
             steps={clientSteps}
             variant="blue"
           />
+        </div>
+      </section>
+
+      {/* AI Intelligence section */}
+      <section id="ai-intelligence" className="landingSection">
+        <div className="landingSection__header">
+          <h2>
+            AI-Powered <span>Intelligence</span>
+          </h2>
+          <p>
+            Advanced algorithms working behind the scenes to optimize your success
+          </p>
+        </div>
+
+        <div className="aiGrid">
+          {/* Card 1 */}
+          <div className="aiCard">
+            <h3>Match Score</h3>
+            <div className="aiCard__main">
+              <div className="aiCard__score">95%</div>
+              <div className="aiCard__progress">
+                <div className="aiCard__progressFill" style={{ width: '95%' }}></div>
+              </div>
+            </div>
+            <p className="aiCard__desc">Perfect match for this role based on skills and experience</p>
+          </div>
+
+          {/* Card 2 */}
+          <div className="aiCard">
+            <h3>Profile Score</h3>
+            <div className="aiCard__skills">
+               <div className="aiSkill">
+                 <div className="aiSkill__info"><span>Skills</span><span>85%</span></div>
+                 <div className="aiSkill__bar"><div style={{width:'85%'}}></div></div>
+               </div>
+               <div className="aiSkill">
+                 <div className="aiSkill__info"><span>Skills</span><span>92%</span></div>
+                 <div className="aiSkill__bar"><div style={{width:'92%'}}></div></div>
+               </div>
+               <div className="aiSkill">
+                 <div className="aiSkill__info"><span>Skills</span><span>70%</span></div>
+                 <div className="aiSkill__bar"><div style={{width:'70%'}}></div></div>
+               </div>
+               <div className="aiSkill">
+                 <div className="aiSkill__info"><span>Skills</span><span>95%</span></div>
+                 <div className="aiSkill__bar"><div style={{width:'95%'}}></div></div>
+               </div>
+            </div>
+            <p className="aiCard__desc">Improve your score to get more visibility</p>
+          </div>
+
+          {/* Card 3 */}
+          <div className="aiCard">
+            <h3>Price Prediction</h3>
+            <div className="aiCard__priceBox">
+               <small>Suggested Rate</small>
+               <div className="aiCard__price">$85<span>/hr</span></div>
+            </div>
+            <ul className="aiCard__priceBreakdown">
+               <li><span>Market Average</span> <span>$72/hr</span></li>
+               <li><span>Your Experience</span> <span className="text-orange">+18%</span></li>
+               <li><span>Skill Premium</span> <span className="text-blue">+12%</span></li>
+            </ul>
+            <p className="aiCard__desc">AI-calculated based on your profile and market data</p>
+          </div>
         </div>
       </section>
     </div>

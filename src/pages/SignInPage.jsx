@@ -1,4 +1,6 @@
     import { useState } from "react";
+    import { Link, useNavigate } from "react-router-dom";
+    import axios from "axios";
     import "./SignInPage.css";
 
     /* ── Full horizontal brand logo (icon + wordmark + tagline) ── */
@@ -128,14 +130,39 @@
     const [email, setEmail]       = useState("");
     const [password, setPassword] = useState("");
     const [showPass, setShowPass] = useState(false);
+    const navigate = useNavigate();
 
-    const handleSignIn = (e) => {
+    const handleSignIn = async (e) => {
         e.preventDefault();
-        alert(`Signing in with: ${email}`);
+        try {
+            const response = await axios.post("http://depiplatform.runasp.net/api/Auth/login", {
+                email,
+                password
+            });
+            console.log("Login successful:", response.data);
+            
+            // Extract user's name: checks common API response structures
+            const apiData = response.data;
+            const userObj = apiData.user || apiData.data || apiData;
+            
+            const userName = 
+                userObj.userName || 
+                userObj.name || 
+                userObj.fullName || 
+                userObj.firstName || 
+                apiData.username ||
+                email.split('@')[0];
+            
+            // Navigate to the dashboard, passing the name via router state
+            navigate("/dashboard", { state: { userName } });
+        } catch (error) {
+            console.error("Login failed:", error);
+            alert("Failed to sign in. " + (error.response?.data?.message || error.message));
+        }
     };
 
     return (
-        <>
+        <div className="auth-wrapper">
         {/* Background glow layer */}
         <div className="bg-glow" aria-hidden="true" />
 
@@ -151,7 +178,7 @@
             </div>
 
             {/* ── Form ── */}
-            <div>
+            <form onSubmit={handleSignIn}>
                 {/* Email */}
                 <div className="field">
                 <label htmlFor="email">Email address</label>
@@ -202,7 +229,7 @@
                 </div>
 
                 {/* Sign in button */}
-                <button className="btn-signin" type="button" onClick={handleSignIn}>
+                <button className="btn-signin" type="submit">
                 Sign in
                 </button>
 
@@ -224,11 +251,11 @@
                 {/* Sign up */}
                 <p className="signup-row">
                 Don't have an account?
-                <a href="#signup">Sign up</a>
+                <Link to="/signup">Sign up</Link>
                 </p>
-            </div>
+            </form>
             </div>
         </main>
-        </>
+        </div>
     );
     }
