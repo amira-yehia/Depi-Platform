@@ -111,36 +111,39 @@ function SignUpPage() {
       </Link>
 
       <div className="signupPage__logoWrap">
-        <Link to="/" style={{ display: 'inline-block' }}>
+        <Link to="/" style={{ display: "inline-block" }}>
           <svg
             className="brand-logo"
             viewBox="0 0 420 100"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-label="NextHire – Smart matches, better future"
-            style={{ width: '300px', height: 'auto', display: 'block' }}
+            style={{ width: "300px", height: "auto", display: "block" }}
           >
             {/* ── Dot grid (top-left of icon) ── */}
             {[0, 7, 14].map((dx) =>
-                [0, 7, 14].map((dy) => {
-                const isOrange = (dx === 7 && dy === 0) || (dx === 14 && dy === 0) || (dx === 14 && dy === 7);
+              [0, 7, 14].map((dy) => {
+                const isOrange =
+                  (dx === 7 && dy === 0) ||
+                  (dx === 14 && dy === 0) ||
+                  (dx === 14 && dy === 7);
                 return (
-                    <circle
+                  <circle
                     key={`${dx}-${dy}`}
                     cx={8 + dx}
                     cy={8 + dy}
                     r={2}
                     fill={isOrange ? "#f47c20" : "#3a5a80"}
-                    />
+                  />
                 );
-                })
+              }),
             )}
 
             {/* ── Navy N body ── */}
             <path
-                d="M14 30 L14 72 L26 72 L26 52 L48 72 L60 72 L60 30 L48 30 L48 50 L26 30 Z"
-                fill="url(#navyGrad)"
-                rx="4"
+              d="M14 30 L14 72 L26 72 L26 52 L48 72 L60 72 L60 30 L48 30 L48 50 L26 30 Z"
+              fill="url(#navyGrad)"
+              rx="4"
             />
 
             {/* ── Orange puzzle piece (overlapping right side) ── */}
@@ -152,22 +155,66 @@ function SignUpPage() {
 
             {/* Gradient for N */}
             <defs>
-                <linearGradient id="navyGrad" x1="14" y1="28" x2="60" y2="74" gradientUnits="userSpaceOnUse">
+              <linearGradient
+                id="navyGrad"
+                x1="14"
+                y1="28"
+                x2="60"
+                y2="74"
+                gradientUnits="userSpaceOnUse"
+              >
                 <stop offset="0%" stopColor="#2a4a72" />
                 <stop offset="100%" stopColor="#1a2e4a" />
-                </linearGradient>
+              </linearGradient>
             </defs>
 
             {/* ── Divider line ── */}
-            <line x1="80" y1="28" x2="80" y2="74" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+            <line
+              x1="80"
+              y1="28"
+              x2="80"
+              y2="74"
+              stroke="rgba(255,255,255,0.15)"
+              strokeWidth="1"
+            />
 
             {/* ── Wordmark: "Next" white ── */}
-            <text x="94" y="63" fontFamily="Poppins, sans-serif" fontSize="32" fontWeight="700" fill="#ffffff" letterSpacing="-0.5">Next</text>
+            <text
+              x="94"
+              y="63"
+              fontFamily="Poppins, sans-serif"
+              fontSize="32"
+              fontWeight="700"
+              fill="#ffffff"
+              letterSpacing="-0.5"
+            >
+              Next
+            </text>
             {/* ── Wordmark: "Hire" orange ── */}
-            <text x="186" y="63" fontFamily="Poppins, sans-serif" fontSize="32" fontWeight="700" fill="#f47c20" letterSpacing="-0.5">Hire</text>
+            <text
+              x="186"
+              y="63"
+              fontFamily="Poppins, sans-serif"
+              fontSize="32"
+              fontWeight="700"
+              fill="#f47c20"
+              letterSpacing="-0.5"
+            >
+              Hire
+            </text>
 
             {/* ── Tagline ── */}
-            <text x="94" y="80" fontFamily="Poppins, sans-serif" fontSize="11" fontWeight="300" fill="rgba(255,255,255,0.50)" letterSpacing="1.5">Smart matches, better future</text>
+            <text
+              x="94"
+              y="80"
+              fontFamily="Poppins, sans-serif"
+              fontSize="11"
+              fontWeight="300"
+              fill="rgba(255,255,255,0.50)"
+              letterSpacing="1.5"
+            >
+              Smart matches, better future
+            </text>
           </svg>
         </Link>
       </div>
@@ -279,8 +326,8 @@ function SignUpPage() {
                 <i
                   className={
                     showPassword
-                      ? "fa-regular fa-eye-slash"
-                      : "fa-regular fa-eye"
+                      ? "fa-regular fa-eye"
+                      : "fa-regular fa-eye-slash"
                   }
                 />
               </button>
