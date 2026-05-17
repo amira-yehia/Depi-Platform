@@ -1,4 +1,7 @@
+import React, { useState, useEffect } from "react";
 import "./ProfilePage.css";
+import { useNavigate } from "react-router-dom";
+import { getCurrentUser } from "../services/apiClient";
 
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileTabs from "../components/ProfileTabs";
@@ -11,11 +14,44 @@ import ProfileFeaturedWorkCard from "../components/ProfileFeaturedWorkCard";
 import ProfileBottomCta from "../components/ProfileBottomCta";
 
 export default function ProfilePage() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock لحد ما الـ API يبقى جاهز
+  useEffect(() => {
+    getCurrentUser()
+      .then((data) => {
+        // The API might return the data directly or wrapped in `data` depending on the API structure.
+        // Assuming data is the user object based on the endpoint documentation.
+        setUserData(data);
+      })
+      .catch((err) => {
+        console.error("Failed to load user profile", err);
+        // Optionally redirect to login if unauthorized
+        if (err.status === 401) {
+          navigate("/sign-in");
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [navigate]);
+
+  function handleReturn() {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+
+    navigate("/dashboard");
+  }
+
+  // Mock until the real API is ready. Populate name/avatar from stored user info when available.
+  const storedName = typeof window !== "undefined" ? localStorage.getItem("authUserName") : null;
+
   const profile = {
-    avatarUrl: "/images/avatar.png",
-    name: "Sarah Chen",
+    avatarUrl: userData?.profileImageUrl || "/images/shadow-avatar.svg",
+    name: userData?.fullName || (userData?.firstName ? `${userData.firstName} ${userData.lastName}` : (storedName || "Sarah Chen")),
     verified: true,
     roleTitle: "Senior Full-Stack Engineer & UI Specialist",
     availableText: "Available now",
@@ -96,7 +132,7 @@ export default function ProfilePage() {
       items: [
         {
           pillLabel: "Web App",
-          imageUrl: "/images/work1.jpg",
+          imageUrl: "/images/profile1.jpg",
           title: "NovaPay — FinTech Dashboard",
           description:
             "Real-time analytics platform for B2B payments, handling $2M+ monthly transactions with interactive charts and role-based access.",
@@ -104,7 +140,7 @@ export default function ProfilePage() {
         },
         {
           pillLabel: "SaaS",
-          imageUrl: "/images/work2.jpg",
+          imageUrl: "/images/profile2.jpg",
           title: "Orbyt — SaaS Platform",
           description:
             "End-to-end project management SaaS with real-time collaboration, Kanban boards, and deep third-party integrations.",
@@ -122,6 +158,17 @@ export default function ProfilePage() {
 
   return (
     <div className="profilePage">
+      <div className="profilePage__topActions">
+        <button
+          type="button"
+          className="profilePage__backBtn"
+          onClick={handleReturn}
+        >
+          <i className="fa-solid fa-arrow-left" aria-hidden="true" />
+          Return
+        </button>
+      </div>
+
       <ProfileHeader profile={profile} />
 
       <div className="profilePage__contentWrap">

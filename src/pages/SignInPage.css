@@ -237,6 +237,32 @@
     box-shadow: 0 3px 12px rgba(244,124,32,0.3);
     }
 
+    .btn-signin:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+    transform: none;
+    }
+
+    .signinStatus {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    }
+
+    .signinStatus--success {
+    background: rgba(46, 204, 113, 0.16);
+    border: 1px solid rgba(46, 204, 113, 0.55);
+    color: rgba(224, 255, 236, 0.98);
+    }
+
+    .signinStatus--error {
+    background: rgba(255, 99, 71, 0.16);
+    border: 1px solid rgba(255, 99, 71, 0.58);
+    color: rgba(255, 230, 226, 0.98);
+    }
+
     /* ── Divider ── */
     .divider {
     display: flex;

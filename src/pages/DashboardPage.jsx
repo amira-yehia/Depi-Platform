@@ -1,6 +1,7 @@
 import ContractCard from "../components/ContractCard";
 import JobMatchCard from "../components/JobMatchCard";
 import StatsCard from "../components/StatsCard";
+import { useLocation } from "react-router-dom";
 
 import "./DashboardPage.css";
 
@@ -127,12 +128,16 @@ const contractsData = [
 ];
 
 function DashboardPage() {
+  const location = useLocation();
+  const userName =
+    location.state?.userName || localStorage.getItem("authUserName") || "Alex";
+
   return (
     <section className="dashboardPage">
       <div className="dashboardPage__container">
         {/* Page header */}
         <header className="dashboardPage__header">
-          <h1>Welcome back, Alex!</h1>
+          <h1>Welcome back, {userName}!</h1>
           <p>Here's what's happening with your freelance journey.</p>
         </header>
 

@@ -117,6 +117,15 @@ function parseBudgetValue(value) {
 export default function FindProjectsPage() {
   const navigate = useNavigate();
 
+  function handleReturn() {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+
+    navigate("/dashboard");
+  }
+
   // TODO: later replace MOCK_PROJECTS with API call
   const [projects] = useState(MOCK_PROJECTS);
 
@@ -159,6 +168,7 @@ export default function FindProjectsPage() {
       header={{
         title: "Find Projects",
         subtitle: "AI-matched opportunities for you",
+        onReturn: handleReturn,
         searchValue: search,
         onSearchChange: setSearch,
       }}

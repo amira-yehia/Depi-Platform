@@ -1,8 +1,67 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./SignInPage.css";
-import ChangePassword from "./ChangePassword.jsx";
+import ForgotPassword from "./ForgotPassword.jsx";
+
+const LOGIN_URL = "http://depiplatform.runasp.net/api/Auth/login";
+
+function getApiErrorMessage(responseData) {
+  if (!responseData) {
+    return "Failed to sign in.";
+  }
+
+  const validationErrors = responseData.errors;
+  if (validationErrors && typeof validationErrors === "object") {
+    const firstError = Object.values(validationErrors).flat()[0];
+    if (firstError) {
+      return firstError;
+    }
+  }
+
+  return (
+    responseData.error ||
+    responseData.message ||
+    responseData.title ||
+    responseData.detail ||
+    (typeof responseData === "string" ? responseData : "Failed to sign in.")
+  );
+}
+
+function loginWithAjax(payload) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", LOGIN_URL, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== XMLHttpRequest.DONE) {
+        return;
+      }
+
+      const responseText = xhr.responseText || "";
+      let responseData = null;
+
+      try {
+        responseData = responseText ? JSON.parse(responseText) : null;
+      } catch {
+        responseData = null;
+      }
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(responseData);
+        return;
+      }
+
+      reject(new Error(getApiErrorMessage(responseData)));
+    };
+
+    xhr.onerror = () => {
+      reject(new Error("Network error. Please try again."));
+    };
+
+    xhr.send(JSON.stringify(payload));
+  });
+}
 
 /* ── Brand Logo ── */
 function BrandLogo() {
@@ -185,62 +244,83 @@ function IconFacebook() {
 /* ───────────────────────────────────── */
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(() => {
+    try {
+      return (localStorage.getItem("authEmail") || "");
+    } catch (e) {
+      return "";
+    }
+  });
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusType, setStatusType] = useState("idle");
 
-  const [changePassOpen, setChangePassOpen] = useState(false);
+  const [forgotPassOpen, setForgotPassOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
+    setStatusMessage("");
+    setStatusType("idle");
+
     try {
-      const response = await axios.post(
-        "http://depiplatform.runasp.net/api/Auth/login",
-        {
-          email,
-          password,
-        },
-      );
-
-      console.log("Login successful:", response.data);
-
-      const apiData = response.data;
+      const apiData = await loginWithAjax({
+        email: email.trim().toLowerCase(),
+        password: password.trim(),
+      });
 
       const userObj = apiData.user || apiData.data || apiData;
 
+      const fullNameFromParts = [userObj.firstName, userObj.lastName]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+
       const userName =
+        fullNameFromParts ||
+        userObj.fullName ||
         userObj.userName ||
         userObj.name ||
-        userObj.fullName ||
         userObj.firstName ||
         apiData.username ||
         email.split("@")[0];
 
-      /* Save Token */
+      /* Save tokens */
       const token =
-        apiData.token ||
-        apiData.accessToken ||
-        apiData.access_token ||
-        userObj.token;
+        apiData.token || apiData.accessToken || apiData.access_token || userObj.token;
+
+      const refreshToken =
+        apiData.refreshToken || apiData.refresh_token || userObj.refreshToken || userObj.refresh_token;
 
       if (token) {
         localStorage.setItem("authToken", token);
+        localStorage.setItem("accessToken", token);
       }
+
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+      }
+
+      localStorage.setItem("authUserName", userName);
+      localStorage.setItem("authEmail", email.trim().toLowerCase());
+
+      setStatusMessage("Signed in successfully.");
+      setStatusType("success");
 
       /* Navigate */
       navigate("/dashboard", {
         state: { userName },
       });
     } catch (error) {
-      console.error("Login failed:", error);
-
-      alert(
-        "Failed to sign in. " +
-          (error.response?.data?.message || error.message),
-      );
+      setStatusMessage(error.message || "Failed to sign in.");
+      setStatusType("error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -315,26 +395,27 @@ export default function SignInPage() {
 
             {/* Forgot Password */}
             <div className="forgot-row">
-              <a href="#forgot">Forgot password?</a>
-            </div>
-
-            {/* Change Password */}
-            <div className="forgot-row">
               <a
-                href="#change-password"
+                href="#forgot"
                 onClick={(e) => {
                   e.preventDefault();
-                  setChangePassOpen(true);
+                  setForgotPassOpen(true);
                 }}
               >
-                Change password?
+                Forgot password?
               </a>
             </div>
 
             {/* Sign In Button */}
-            <button className="btn-signin" type="submit">
-              Sign In
+            <button className="btn-signin" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
+
+            {statusMessage ? (
+              <p className={`signinStatus signinStatus--${statusType}`} role="status">
+                {statusMessage}
+              </p>
+            ) : null}
 
             {/* Divider */}
             <div className="divider">Or continue with</div>
@@ -361,10 +442,10 @@ export default function SignInPage() {
         </div>
       </main>
 
-      {/* Change Password Modal */}
-      <ChangePassword
-        isOpen={changePassOpen}
-        onClose={() => setChangePassOpen(false)}
+      <ForgotPassword
+        isOpen={forgotPassOpen}
+        onClose={() => setForgotPassOpen(false)}
+        initialEmail={email}
       />
     </div>
   );

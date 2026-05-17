@@ -43,10 +43,15 @@ export default function FindProjectsView({
 
 /* ---------------- Sub-components ---------------- */
 
-function Header({ title, subtitle, searchValue, onSearchChange }) {
+function Header({ title, subtitle, onReturn, searchValue, onSearchChange }) {
   return (
     <header className="fpvHeader">
       <div className="fpvHeader__left">
+        <button type="button" className="fpvHeader__backBtn" onClick={onReturn}>
+          <i className="fa-solid fa-arrow-left" aria-hidden="true" />
+          Return
+        </button>
+
         <h1 className="fpvHeader__title">{title}</h1>
         <div className="fpvHeader__sub">{subtitle}</div>
       </div>

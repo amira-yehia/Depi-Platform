@@ -281,6 +281,32 @@
   transform: translateY(-1px);
 }
 
+.signupSubmit:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signupStatus {
+  margin: 4px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.signupStatus--success {
+  background: rgba(46, 204, 113, 0.18);
+  border: 1px solid rgba(46, 204, 113, 0.6);
+  color: rgba(210, 255, 229, 0.98);
+}
+
+.signupStatus--error {
+  background: rgba(255, 99, 71, 0.18);
+  border: 1px solid rgba(255, 99, 71, 0.62);
+  color: rgba(255, 228, 224, 0.98);
+}
+
 .signupBenefits {
   margin-top: 18px;
   padding: 16px;

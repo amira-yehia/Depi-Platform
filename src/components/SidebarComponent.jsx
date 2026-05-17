@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import "./Sidebar.css";
+import { logout } from "../services/apiClient";
+import ChangePassword from "../pages/ChangePassword";
 
 const sidebarLinks = [
   {
@@ -46,6 +49,8 @@ const sidebarLinks = [
 ];
 
 function SidebarComponent() {
+  const [changePassOpen, setChangePassOpen] = useState(false);
+
   return (
     <aside className="sidebar">
       {/* Sidebar logo */}
@@ -85,13 +90,36 @@ function SidebarComponent() {
         </div>
       </nav>
 
-      {/* Logout link */}
+      {/* Logout link and Change Password */}
       <div className="sidebar-footer">
-        <NavLink to="/" className="sidebar-nav-link">
+        <button
+          type="button"
+          className="sidebar-nav-link"
+          onClick={(e) => {
+            e.preventDefault();
+            setChangePassOpen(true);
+          }}
+        >
+          <i className="fa-solid fa-key" aria-hidden="true" />
+          <span>Change Password</span>
+        </button>
+        <button
+          type="button"
+          className="sidebar-nav-link"
+          onClick={(e) => {
+            e.preventDefault();
+            logout();
+          }}
+        >
           <i className="fa-solid fa-arrow-right-from-bracket" aria-hidden="true" />
           <span>Log Out</span>
-        </NavLink>
+        </button>
       </div>
+
+      <ChangePassword
+        isOpen={changePassOpen}
+        onClose={() => setChangePassOpen(false)}
+      />
     </aside>
   );
 }
