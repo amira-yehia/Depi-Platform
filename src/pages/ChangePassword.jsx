@@ -1,6 +1,42 @@
 import { useState } from "react";
-import axios from "axios";
 import "./ChangePassword.css";
+import apiClient from "../services/apiClient";
+
+const CHANGE_PASSWORD_URL = "http://depiplatform.runasp.net/api/Auth/change-password";
+
+function getApiErrorMessage(responseData) {
+  if (!responseData) {
+    return "Failed to change password.";
+  }
+
+  const validationErrors = responseData.errors;
+  if (validationErrors && typeof validationErrors === "object") {
+    const firstError = Object.values(validationErrors).flat()[0];
+    if (firstError) {
+      return firstError;
+    }
+  }
+
+  return (
+    responseData.error ||
+    responseData.message ||
+    responseData.title ||
+    responseData.detail ||
+    (typeof responseData === "string"
+      ? responseData
+      : "Failed to change password.")
+  );
+}
+
+function changePasswordWithAjax(payload, token) {
+  // Use apiClient.apiRequest to get automatic refresh handling and retry
+  return apiClient.apiRequest({
+    url: CHANGE_PASSWORD_URL,
+    method: "POST",
+    data: payload,
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  }).then((res) => res.data);
+}
 
 function IconLock() {
   return (
@@ -92,6 +128,8 @@ function PwField({
 }
 
 export default function ChangePassword({ isOpen, onClose }) {
+  const accountEmail = localStorage.getItem("authEmail") || "";
+
   const [currentPassword, setCurrentPassword] = useState("");
 
   const [newPassword, setNewPassword] = useState("");
@@ -143,18 +181,12 @@ export default function ChangePassword({ isOpen, onClose }) {
     try {
       const token = localStorage.getItem("authToken");
 
-      await axios.post(
-        "http://depiplatform.runasp.net/api/Auth/change-password",
+      await changePasswordWithAjax(
         {
-          currentPassword,
-          newPassword,
+          currentPassword: currentPassword.trim(),
+          newPassword: newPassword.trim(),
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        token,
       );
 
       setSuccess(true);
@@ -163,11 +195,7 @@ export default function ChangePassword({ isOpen, onClose }) {
         handleClose();
       }, 2000);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.response?.data?.detail ||
-          "Failed to change password.",
-      );
+      setError(err.message || "Failed to change password.");
     } finally {
       setLoading(false);
     }
@@ -186,6 +214,11 @@ export default function ChangePassword({ isOpen, onClose }) {
             <h2>Change Password</h2>
 
             <p>Keep your account secure</p>
+            {accountEmail ? (
+              <p className="cp-accountInfo">
+                Changing password for: <strong>{accountEmail}</strong>
+              </p>
+            ) : null}
           </div>
 
           <button className="close-btn" onClick={handleClose}>

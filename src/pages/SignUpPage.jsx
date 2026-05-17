@@ -2,6 +2,83 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./SignUpPage.css";
 
+const REGISTER_URL = "http://depiplatform.runasp.net/api/Auth/register";
+
+const USER_TYPE_BY_ROLE = {
+  freelancer: 1,
+  client: 2,
+};
+
+function splitName(fullName) {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return { firstName: "", lastName: "" };
+  }
+
+  const firstName = parts[0];
+  const lastName = parts.slice(1).join(" ") || parts[0];
+  return { firstName, lastName };
+}
+
+function getProblemDetailsMessage(responseData) {
+  if (!responseData) {
+    return "Registration failed.";
+  }
+
+  const validationErrors = responseData.errors;
+  if (validationErrors && typeof validationErrors === "object") {
+    const firstError = Object.values(validationErrors).flat()[0];
+    if (firstError) {
+      return firstError;
+    }
+  }
+
+  return (
+    responseData.message ||
+    responseData.title ||
+    responseData.detail ||
+    (typeof responseData === "string" ? responseData : "Registration failed.")
+  );
+}
+
+function registerWithAjax(payload) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", REGISTER_URL, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== XMLHttpRequest.DONE) {
+        return;
+      }
+
+      const responseText = xhr.responseText || "";
+      let responseData = null;
+
+      try {
+        responseData = responseText ? JSON.parse(responseText) : null;
+      } catch {
+        responseData = null;
+      }
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(responseData);
+        return;
+      }
+
+      const message = getProblemDetailsMessage(responseData);
+
+      reject(new Error(message));
+    };
+
+    xhr.onerror = () => {
+      reject(new Error("Network error. Please try again."));
+    };
+
+    xhr.send(JSON.stringify(payload));
+  });
+}
+
 const roles = [
   {
     id: "freelancer",
@@ -27,10 +104,59 @@ const benefits = [
 function SignUpPage() {
   const [selectedRole, setSelectedRole] = useState("freelancer");
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    acceptedTerms: false,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusType, setStatusType] = useState("idle");
 
-  function handleSubmit(event) {
+  function handleInputChange(event) {
+    const { name, value, type, checked } = event.target;
+
+    setFormData((current) => ({
+      ...current,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Selected role:", selectedRole);
+
+    setIsSubmitting(true);
+    setStatusMessage("");
+    setStatusType("idle");
+
+    try {
+      const { firstName, lastName } = splitName(formData.fullName);
+
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        firstName,
+        lastName,
+        userType: USER_TYPE_BY_ROLE[selectedRole],
+      };
+
+      await registerWithAjax(payload);
+
+      setStatusMessage("Account created successfully. You can sign in now.");
+      setStatusType("success");
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+        acceptedTerms: false,
+      });
+    } catch (error) {
+      setStatusMessage(error.message || "Could not create account.");
+      setStatusType("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -80,7 +206,14 @@ function SignUpPage() {
             <span>Full name</span>
             <div className="signupField__control">
               <i className="fa-regular fa-user" aria-hidden="true" />
-              <input type="text" placeholder="John Doe" required />
+              <input
+                type="text"
+                name="fullName"
+                placeholder="John Doe"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                required
+              />
             </div>
           </label>
 
@@ -88,7 +221,14 @@ function SignUpPage() {
             <span>Email address</span>
             <div className="signupField__control">
               <i className="fa-regular fa-envelope" aria-hidden="true" />
-              <input type="email" placeholder="you@example.com" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
             </div>
           </label>
 
@@ -98,7 +238,10 @@ function SignUpPage() {
               <i className="fa-solid fa-lock" aria-hidden="true" />
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Create a strong password"
+                value={formData.password}
+                onChange={handleInputChange}
                 required
               />
 
@@ -121,16 +264,28 @@ function SignUpPage() {
           </label>
 
           <label className="signupTerms">
-            <input type="checkbox" required />
+            <input
+              type="checkbox"
+              name="acceptedTerms"
+              checked={formData.acceptedTerms}
+              onChange={handleInputChange}
+              required
+            />
             <span>
               I agree to the <a href="#terms">Terms of Service</a> and{" "}
               <a href="#privacy">Privacy Policy</a>
             </span>
           </label>
 
-          <button type="submit" className="signupSubmit">
-            Create Account
+          <button type="submit" className="signupSubmit" disabled={isSubmitting}>
+            {isSubmitting ? "Creating account..." : "Create Account"}
           </button>
+
+          {statusMessage ? (
+            <p className={`signupStatus signupStatus--${statusType}`} role="status">
+              {statusMessage}
+            </p>
+          ) : null}
         </form>
 
         <div className="signupBenefits">
@@ -148,7 +303,7 @@ function SignUpPage() {
         <div className="signupDivider" />
 
         <p className="signupCard__footer">
-          Already have an account? <a href="#signin">Sign in</a>
+          Already have an account? <Link to="/signin">Sign in</Link>
         </p>
       </section>
     </main>

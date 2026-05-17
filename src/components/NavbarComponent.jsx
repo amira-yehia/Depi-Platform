@@ -25,9 +25,9 @@ function NavbarComponent() {
 
           {/* Auth actions */}
           <div className="nh-navbar__actions">
-            <a href="#login" className="nh-navbar__login">
+            <Link to="/signin" className="nh-navbar__login">
               Log In
-            </a>
+            </Link>
 
             <Link to="/signup" className="nh-navbar__signup">
               Get Started

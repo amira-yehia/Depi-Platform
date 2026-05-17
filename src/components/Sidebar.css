@@ -9,7 +9,15 @@
   border-right: 1px solid rgba(63, 96, 137, 0.55);
   box-shadow: 10px 0 35px rgba(0, 0, 0, 0.18);
   overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: 40;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Chrome, Safari, current Edge */
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar-header {
@@ -45,6 +53,9 @@
   font-size: 15px;
   font-weight: 700;
   transition: 0.2s ease;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
 }
 
 .sidebar-nav-link i {
@@ -73,6 +84,16 @@
 .sidebar-footer {
   padding: 18px 16px;
   border-top: 1px solid rgba(63, 96, 137, 0.72);
+}
+
+.sidebar-footer .sidebar-nav-link {
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-nav-link:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
