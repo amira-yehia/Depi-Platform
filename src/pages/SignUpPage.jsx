@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import "./SignUpPage.css";
-
-const API_URL = "http://depiplatform.runasp.net/api/Auth/register";
 
 const roles = [
   {
@@ -28,201 +25,30 @@ const benefits = [
 ];
 
 function SignUpPage() {
-  const navigate = useNavigate();
-
   const [selectedRole, setSelectedRole] = useState("freelancer");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    dateOfBirth: "",
-  });
-
-  function handleChange(event) {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  }
-
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    setLoading(true);
-
-    try {
-      const names = formData.fullName.trim().split(" ");
-      const firstName = names[0];
-      const lastName = names.slice(1).join(" ") || "User";
-
-      const requestBody = {
-        email: formData.email.trim(),
-        password: formData.password,
-        firstName: firstName,
-        lastName: lastName,
-        userType: selectedRole === "client" ? 1 : 0,
-        gender: 0,
-        dateOfBirth: `${formData.dateOfBirth}T00:00:00.000Z`,
-        phoneNumber: formData.phoneNumber.trim(),
-        countryId: 1,
-      };
-
-      const response = await axios.post(API_URL, requestBody, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-
-      if (response.data.accessToken) {
-        localStorage.setItem("accessToken", response.data.accessToken);
-      }
-
-      if (response.data.refreshToken) {
-        localStorage.setItem("refreshToken", response.data.refreshToken);
-      }
-
-      alert("Account created successfully!");
-      navigate("/");
-    } catch (error) {
-      console.error("Register Error:", error);
-
-      if (error.response) {
-        alert(
-          error.response.data?.detail ||
-            error.response.data?.message ||
-            "Registration failed",
-        );
-      } else {
-        alert("Network error. Please check backend connection or CORS.");
-      }
-    } finally {
-      setLoading(false);
-    }
+    console.log("Selected role:", selectedRole);
   }
 
   return (
     <main className="signupPage">
-      <Link to="/" className="signupPage__topButton">
-        Get Started
-      </Link>
-
       <div className="signupPage__logoWrap">
-        <Link to="/" style={{ display: "inline-block" }}>
-          <svg
-            className="brand-logo"
-            viewBox="0 0 420 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="NextHire – Smart matches, better future"
-            style={{ width: "300px", height: "auto", display: "block" }}
-          >
-            {/* ── Dot grid (top-left of icon) ── */}
-            {[0, 7, 14].map((dx) =>
-              [0, 7, 14].map((dy) => {
-                const isOrange =
-                  (dx === 7 && dy === 0) ||
-                  (dx === 14 && dy === 0) ||
-                  (dx === 14 && dy === 7);
-                return (
-                  <circle
-                    key={`${dx}-${dy}`}
-                    cx={8 + dx}
-                    cy={8 + dy}
-                    r={2}
-                    fill={isOrange ? "#f47c20" : "#3a5a80"}
-                  />
-                );
-              }),
-            )}
-
-            {/* ── Navy N body ── */}
-            <path
-              d="M14 30 L14 72 L26 72 L26 52 L48 72 L60 72 L60 30 L48 30 L48 50 L26 30 Z"
-              fill="url(#navyGrad)"
-              rx="4"
-            />
-
-            {/* ── Orange puzzle piece (overlapping right side) ── */}
-            <rect x="42" y="28" width="16" height="46" rx="4" fill="#f47c20" />
-            {/* Puzzle bump right */}
-            <circle cx="58" cy="51" r="6" fill="#f47c20" />
-            {/* Puzzle notch left (cut into N) */}
-            <circle cx="42" cy="51" r="6" fill="url(#navyGrad)" />
-
-            {/* Gradient for N */}
-            <defs>
-              <linearGradient
-                id="navyGrad"
-                x1="14"
-                y1="28"
-                x2="60"
-                y2="74"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop offset="0%" stopColor="#2a4a72" />
-                <stop offset="100%" stopColor="#1a2e4a" />
-              </linearGradient>
-            </defs>
-
-            {/* ── Divider line ── */}
-            <line
-              x1="80"
-              y1="28"
-              x2="80"
-              y2="74"
-              stroke="rgba(255,255,255,0.15)"
-              strokeWidth="1"
-            />
-
-            {/* ── Wordmark: "Next" white ── */}
-            <text
-              x="94"
-              y="63"
-              fontFamily="Poppins, sans-serif"
-              fontSize="32"
-              fontWeight="700"
-              fill="#ffffff"
-              letterSpacing="-0.5"
-            >
-              Next
-            </text>
-            {/* ── Wordmark: "Hire" orange ── */}
-            <text
-              x="186"
-              y="63"
-              fontFamily="Poppins, sans-serif"
-              fontSize="32"
-              fontWeight="700"
-              fill="#f47c20"
-              letterSpacing="-0.5"
-            >
-              Hire
-            </text>
-
-            {/* ── Tagline ── */}
-            <text
-              x="94"
-              y="80"
-              fontFamily="Poppins, sans-serif"
-              fontSize="11"
-              fontWeight="300"
-              fill="rgba(255,255,255,0.50)"
-              letterSpacing="1.5"
-            >
-              Smart matches, better future
-            </text>
-          </svg>
+        <Link to="/">
+          <img
+            src="/images/logo.png"
+            alt="NextHire logo"
+            className="signupPage__logo"
+          />
         </Link>
       </div>
 
       <section className="signupCard" aria-labelledby="signup-title">
         <header className="signupCard__header">
           <h1 id="signup-title">Create your account</h1>
-          <p>Join thousands using AI-powered freelancing.</p>
+          <p>Join thousands using AI-powered freelancing</p>
         </header>
 
         <form className="signupForm" onSubmit={handleSubmit}>
@@ -234,12 +60,15 @@ function SignUpPage() {
                 <button
                   key={role.id}
                   type="button"
-                  className={`signupRoleCard ${selectedRole === role.id ? "is-active" : ""}`}
+                  className={`signupRoleCard ${
+                    selectedRole === role.id ? "is-active" : ""
+                  }`}
                   onClick={() => setSelectedRole(role.id)}
                 >
                   <span className="signupRoleCard__icon">
                     <i className={role.icon} aria-hidden="true" />
                   </span>
+
                   <strong>{role.title}</strong>
                   <small>{role.subtitle}</small>
                 </button>
@@ -248,87 +77,44 @@ function SignUpPage() {
           </div>
 
           <label className="signupField">
-            <span>Full Name</span>
+            <span>Full name</span>
             <div className="signupField__control">
-              <i className="fa-regular fa-user" />
-              <input
-                type="text"
-                name="fullName"
-                placeholder="John Doe"
-                value={formData.fullName}
-                onChange={handleChange}
-                required
-              />
+              <i className="fa-regular fa-user" aria-hidden="true" />
+              <input type="text" placeholder="John Doe" required />
             </div>
           </label>
 
           <label className="signupField">
-            <span>Email Address</span>
+            <span>Email address</span>
             <div className="signupField__control">
-              <i className="fa-regular fa-envelope" />
-              <input
-                type="email"
-                name="email"
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </label>
-
-          <label className="signupField">
-            <span>Phone Number</span>
-            <div className="signupField__control">
-              <i className="fa-solid fa-phone" />
-              <input
-                type="text"
-                name="phoneNumber"
-                placeholder="01012345678"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </label>
-
-          <label className="signupField">
-            <span>Date of Birth</span>
-            <div className="signupField__control">
-              <i className="fa-regular fa-calendar" />
-              <input
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                required
-              />
+              <i className="fa-regular fa-envelope" aria-hidden="true" />
+              <input type="email" placeholder="you@example.com" required />
             </div>
           </label>
 
           <label className="signupField">
             <span>Password</span>
             <div className="signupField__control">
-              <i className="fa-solid fa-lock" />
+              <i className="fa-solid fa-lock" aria-hidden="true" />
               <input
                 type={showPassword ? "text" : "password"}
-                name="password"
                 placeholder="Create a strong password"
-                value={formData.password}
-                onChange={handleChange}
                 required
               />
+
               <button
                 type="button"
                 className="signupField__toggle"
-                onClick={() => setShowPassword((current) => !current)}
+                onClick={() => setShowPassword((c) => !c)}
+                aria-label="Toggle password visibility"
               >
                 <i
                   className={
                     showPassword
-                      ? "fa-regular fa-eye"
-                      : "fa-regular fa-eye-slash"
+                      ? "fa-regular fa-eye-slash"
+                      : "fa-regular fa-eye"
                   }
+                  aria-hidden="true"
                 />
               </button>
             </div>
@@ -336,11 +122,14 @@ function SignUpPage() {
 
           <label className="signupTerms">
             <input type="checkbox" required />
-            <span>I agree to the Terms of Service and Privacy Policy</span>
+            <span>
+              I agree to the <a href="#terms">Terms of Service</a> and{" "}
+              <a href="#privacy">Privacy Policy</a>
+            </span>
           </label>
 
-          <button type="submit" className="signupSubmit" disabled={loading}>
-            {loading ? "Creating Account..." : "Create Account"}
+          <button type="submit" className="signupSubmit">
+            Create Account
           </button>
         </form>
 
@@ -349,15 +138,17 @@ function SignUpPage() {
           <ul>
             {benefits.map((benefit) => (
               <li key={benefit}>
-                <i className="fa-regular fa-circle-check" />
+                <i className="fa-regular fa-circle-check" aria-hidden="true" />
                 {benefit}
               </li>
             ))}
           </ul>
         </div>
 
+        <div className="signupDivider" />
+
         <p className="signupCard__footer">
-          Already have an account? <Link to="/login">Sign in</Link>
+          Already have an account? <a href="#signin">Sign in</a>
         </p>
       </section>
     </main>

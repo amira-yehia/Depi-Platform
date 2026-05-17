@@ -2,11 +2,7 @@
   min-height: 100vh;
   padding: 42px 32px 64px;
   background:
-    radial-gradient(
-      circle at 48% 42%,
-      rgba(63, 96, 137, 0.42),
-      transparent 34%
-    ),
+    radial-gradient(circle at 48% 42%, rgba(63, 96, 137, 0.42), transparent 34%),
     var(--nh-navy);
 }
 
@@ -44,11 +40,7 @@
   border-radius: 18px;
   color: var(--nh-white);
   background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.015)
-    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
     rgba(13, 38, 71, 0.9);
   border: 1px solid rgba(63, 96, 137, 0.48);
   box-shadow: var(--nh-shadow-soft);

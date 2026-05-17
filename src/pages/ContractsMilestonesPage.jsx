@@ -114,10 +114,7 @@ function MilestoneItem({ milestone }) {
 }
 
 function ContractMilestoneCard({ contract }) {
-  const safeProgress = Math.min(
-    Math.max(Number(contract.progress) || 0, 0),
-    100,
-  );
+  const safeProgress = Math.min(Math.max(Number(contract.progress) || 0, 0), 100);
 
   return (
     <article className="contractMilestoneCard">
